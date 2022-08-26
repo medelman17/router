@@ -238,7 +238,15 @@ impl Executable {
             })
             .unwrap_or_else(|| Configuration::builder().build().into());
 
-        let apollo_router_msg = format!("Apollo Router v{} // (c) Apollo Graph, Inc. // Licensed as ELv2 (https://go.apollo.dev/elv2)", std::env!("CARGO_PKG_VERSION"));
+        let value = std::env::var("APOLLO_TELEMETRY_DISABLED").ok();
+        let is_telemetry_disabled = value.is_some();
+        let apollo_telemetry_msg = if is_telemetry_disabled {
+            "Telemetry has been disabled.".to_string()
+        } else {
+            "Telemetry is enabled. To disable, set APOLLO_TELEMETRY_DISABLED=1".to_string()
+        };
+
+        let apollo_router_msg = format!("Apollo Router v{} // (c) Apollo Graph, Inc. // Licensed as ELv2 (https://go.apollo.dev/elv2)\n{}", apollo_telemetry_msg, std::env!("CARGO_PKG_VERSION"));
         let schema = match (opt.supergraph_path, opt.apollo_key) {
             (Some(supergraph_path), _) => {
                 tracing::info!("{apollo_router_msg}");
