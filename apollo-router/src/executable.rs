@@ -246,7 +246,7 @@ impl Executable {
             "Telemetry is enabled. To disable, set APOLLO_TELEMETRY_DISABLED=1".to_string()
         };
 
-        let apollo_router_msg = format!("Apollo Router v{} // (c) Apollo Graph, Inc. // Licensed as ELv2 (https://go.apollo.dev/elv2)\n{}", apollo_telemetry_msg, std::env!("CARGO_PKG_VERSION"));
+        let apollo_router_msg = format!("Apollo Router v{} // (c) Apollo Graph, Inc. // Licensed as ELv2 (https://go.apollo.dev/elv2)\n{}", std::env!("CARGO_PKG_VERSION"), apollo_telemetry_msg);
         let schema = match (opt.supergraph_path, opt.apollo_key) {
             (Some(supergraph_path), _) => {
                 tracing::info!("{apollo_router_msg}");
